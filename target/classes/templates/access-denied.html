@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Error 404</title>
+    <style>
+        body {
+            background-color: #fff; /* Set background to white */
+            color: #000; /* Set text color to black */
+            font-family: Arial, sans-serif; /* Set font */
+        }
+
+        h1 {
+            color: #000; /* Set heading color to black */
+        }
+
+        p {
+            color: #000; /* Set paragraph color to black */
+        }
+
+        /* Improved div styling */
+        div.error-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh; /* Full viewport height */
+            border: 2px solid red;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #fff; /* Set button background to white */
+            border: 2px solid #000; /* Set button border */
+            color: #000; /* Set button text color to black */
+            text-decoration: none; /* Remove underline from button */
+            cursor: pointer; /* Show pointer cursor on hover */
+            transition: background-color 0.3s, color 0.3s; /* Smooth transition on hover */
+        }
+
+        button:hover {
+            background-color: #000; /* Change button background on hover */
+            color: #fff; /* Change button text color on hover */
+        }
+
+        /* Apply grayscale filter to images */
+        img {
+            filter: grayscale(100%);
+        }
+    </style>
+</head>
+<body>
+<div class="error-container">
+    <h1>Access Denied</h1>
+    <p>You do not have the necessary permissions to access this page.</p>
+
+    <!-- Button to /error -->
+    <form method="get" th:action="@{/}">
+        <button type="submit">Go to HomePage</button>
+    </form>
+</div>
+</body>
+</html>

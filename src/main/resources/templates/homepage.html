@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>My Blog Application</title>
+    <link rel="stylesheet" th:href="@{/css/homepage.css}">
+</head>
+
+<body>
+<div class="container">
+    <div class="header">
+        <h1>My Blog Application</h1>
+        <div class="actions">
+            <a th:href="@{/loginPage}" th:unless="${#authorization.expression('isAuthenticated()')}">
+                <button class="login-btn">Login</button>
+            </a>
+            <a th:href="@{/register}" th:unless="${#authorization.expression('isAuthenticated()')}">
+                <button class="login-btn">Register</button>
+            </a>
+            <span sec:authorize="isAuthenticated()">
+                <h2>Welcome, <span th:text="${user.name}"></span>!</h2>
+            </span>
+        </div>
+        <th:block th:if="${#authorization.expression('isAuthenticated()')}">
+            <form method="post" th:action="@{/logout}">
+                <input type="submit" value="Logout">
+            </form>
+        </th:block>
+        <form method="get" th:action="@{/newPost}">
+            <button type="submit">Create New Post</button>
+        </form>
+    </div>
+    <div class="options">
+        <div class="filter-section">
+            <form method="get" th:action="@{/}">
+                <input name="searchTerm" placeholder="Search..." type="text"/>
+                <button type="submit">Search</button>
+            </form>
+            <button>
+                <form method="get" th:action="@{/}">
+                    <select name="sortOrder">
+                        <option value="asc">Old First</option>
+                        <option value="desc">New First</option>
+                    </select>
+                    <input name="sortField" type="hidden" value="createdAt">
+                    <button type="submit"><span>Sort</span></button>
+                </form>
+            </button>
+            <form method="get" th:action="@{/filter}">
+                <div class="select-section">
+                    <h4>Select an author</h4>
+                    <select multiple name="authors">
+                        <option th:each="author : ${authors}" th:text="${author}" th:value="${author}"></option>
+                    </select>
+                    <h4>Select a tag</h4>
+                    <select multiple name="tags">
+                        <option th:each="tag : ${tags}" th:text="${tag.name}" th:value="${tag.id}"></option>
+                    </select>
+                </div>
+                <button class="filter-btn" type="submit">Filter</button>
+            </form>
+
+        </div>
+    </div>
+
+    <div class="posts">
+        <div class="homePage" th:each="post : ${posts}">
+
+            <a th:href="@{/posts/{postId}(postId=${post.id})}">
+                <h3 th:text="${post.title}"></h3>
+            </a>
+            <h4 th:text="'Created By : '+${post.author}"></h4>
+            <p th:text="${post.excerpt}"></p>
+            <p th:text="${post.createdAt}"></p>
+            <span th:text="${#strings.abbreviate(post.content, 300)}"></span>
+            <a th:href="@{/posts/{postId}(postId=${post.id})}" th:if="${#strings.length(post.content) > 300}">Read
+                More</a>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="navigation">
+        <button class="nav-btn prev-btn">
+            <a th:href="@{'/?pageNo=' + ${currentPage - 1}+'&sortField=' + ${sortField}+'&sortOrder=' + ${sortOrder} }"
+               th:if="${currentPage > 0}">
+                <i class="fas fa-chevron-left"></i> Previous
+            </a>
+            <span th:unless="${currentPage > 0}">
+                <i class="fas fa-chevron-left"></i> Previous
+            </span>
+        </button>
+
+        <button class="nav-btn next-btn">
+            <a th:href="@{'/?pageNo=' + ${currentPage + 1}+'&sortField=' + ${sortField}+'&sortOrder=' + ${sortOrder} }"
+               th:if="${currentPage < totalPages - 1}">
+                Next <i class="fas fa-chevron-right"></i>
+            </a>
+            <span th:unless="${currentPage < totalPages - 1}">
+                Next <i class="fas fa-chevron-right"></i>
+            </span>
+        </button>
+    </div>
+</div>
+</body>
+
+</html>

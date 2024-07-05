@@ -1,0 +1,48 @@
+
+
+/* Body */
+body {
+    background-color: white;
+    color: black;
+    font-family: Arial, sans-serif;
+}
+
+/* Heading */
+h2 {
+    color: black;
+}
+
+/* Form Container */
+form {
+    margin: 20px;
+}
+
+/* Labels */
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: black;
+}
+
+/* Text Inputs and Textarea */
+input[type="text"],
+textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid black;
+    color: black;
+}
+
+/* Submit Button */
+button[type="submit"] {
+    padding: 10px 20px;
+    background-color: black;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #333;
+}

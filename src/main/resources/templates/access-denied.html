@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Error 404</title>
+    <link rel="stylesheet" th:href="@{/css/access-denied.css}">
+</head>
+<body>
+<div class="error-container">
+    <h1>Access Denied</h1>
+    <p>You do not have the necessary permissions to access this page.</p>
+    <form method="get" th:action="@{/}">
+        <button type="submit">Go to HomePage</button>
+    </form>
+</div>
+</body>
+</html>
