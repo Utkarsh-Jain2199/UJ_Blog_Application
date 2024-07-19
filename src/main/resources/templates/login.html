@@ -17,14 +17,16 @@
             <i>Logged out successfully</i>
         </div>
         <label for="email">Email:</label>
-        <input id="email" name="username" required type="text"/>
+        <input id="email" name="username" required type="text" class="input-field"/>
 
         <label for="password">Password:</label>
-        <input id="password" name="password" required type="password"/>
+        <input id="password" name="password" required type="password" class="input-field"/>
 
-        <button type="submit">Login</button>
+        <button type="submit" class="submit-btn">Login</button>
     </form>
+    <div class="register-link">
+        <p>Don't have an account? <a th:href="@{/register}">Register</a></p>
+    </div>
 </div>
 </body>
 </html>
-
