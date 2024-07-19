@@ -57,7 +57,7 @@ public class PostController {
         //post.setAuthor("Unknown");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userRepository.findByEmail(authentication.getName());
-        if (user.getRole().equals("author")) {
+         if (user.getRole().equals("author") || user.getRole().equals("admin")) {
             post.setAuthor(user.getName());
         }
         user.getPosts().add(post);
