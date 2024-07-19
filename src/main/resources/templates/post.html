@@ -8,52 +8,53 @@
 </head>
 
 <body>
-<a style="display: inline;" th:href="@{/}">
-    <button>Go To Home</button>
-</a>
-<h2 th:text="${post.title}"></h2>
-<h4 th:text="'Created By : '+${post.author}"></h4>
-<p th:text="${post.excerpt}"></p>
-<p th:text="${post.content}"></p>
-<h2>Comments</h2>
-<div th:each="comment : ${commentsList}">
-    <p th:text="${comment.name}"></p>
-    <p th:text="${comment.comment}"></p>
-    <div class="comment-actions">
-        <form method="get" style="display: inline;"
-              th:action="@{'/editComment/' + ${comment.id} + '?postId=' + ${post.id}}">
-            <button type="submit">Edit Comment</button>
+<div class="container">
+    <a class="home-button" th:href="@{/}">
+        <button>Go To Home</button>
+    </a>
+    <h2 th:text="${post.title}"></h2>
+    <h4 th:text="'Created By : '+${post.author}"></h4>
+    <h3 th:text="'Excerpt : '+${post.excerpt}"></h3>
+    <p th:text="${post.content}"></p>
+    <h2>Comments</h2>
+    <div class="comments-section" th:each="comment : ${commentsList}">
+        <p class="comment-author" th:text="${comment.name}"></p>
+        <p class="comment-text" th:text="${comment.comment}"></p>
+        <div class="comment-actions">
+            <form method="get" th:action="@{'/editComment/' + ${comment.id} + '?postId=' + ${post.id}}">
+                <button type="submit" class="edit-button">Edit Comment</button>
+            </form>
+            <form method="post" th:action="@{'/deleteComment/' + ${comment.id}}">
+                <input name="postId" th:value="${post.id}" type="hidden"/>
+                <button type="submit" class="delete-button">Delete Comment</button>
+            </form>
+        </div>
+    </div>
+    <div class="tags-container">
+        <h3>Tags:</h3>
+        <div class="tags-section" th:each="tag : ${tags}">
+            <span class="tag" th:text="${tag.name}"></span>
+        </div>
+    </div>
+
+    <h3>Add a new Comment</h3>
+    <form method="post" th:action="@{/comment/{postId}(postId=${post.id})}" th:object="${newComment}">
+        <label for="name">Your Name:</label>
+        <input id="name" name="name" required type="text" class="input-field"/>
+
+        <label for="comment">Your Comment:</label>
+        <textarea id="comment" name="comment" required class="textarea-field"></textarea><br/>
+
+        <button type="submit" class="submit-btn">Add Comment</button>
+    </form>
+    <div class="post-actions">
+        <form method="post" th:action="@{'/delete/' + ${post.id}}">
+            <button type="submit" class="delete-post-button">Delete Post</button>
         </form>
-        <form method="post" style="display: inline;" th:action="@{'/deleteComment/' + ${comment.id}}">
-            <!-- Add Hidden Input for postId -->
-            <input name="postId" th:value="${post.id}" type="hidden"/>
-            <button type="submit">Delete Comment</button>
-        </form>
+        <a th:href="@{'/update/' + ${post.id}}">
+            <button class="update-post-button">Update Post</button>
+        </a>
     </div>
 </div>
-<h3>Tags:</h3>
-<div th:each="tag : ${tags}">
-    <span th:text="${tag.name}"></span>
-</div>
-
-<h3>Add a new Comment</h3>
-<form method="post" th:action="@{/comment/{postId}(postId=${post.id})}" th:object="${newComment}">
-    <label for="name">Your Name:</label>
-    <input id="name" name="name" required type="text"/><br/>
-
-    <label for="comment">Your Comment:</label>
-    <textarea id="comment" name="comment" required></textarea><br/>
-
-    <button type="submit">Add Comment</button>
-</form>
-<div class="post-actions">
-    <form method="post" style="display: inline;" th:action="@{'/delete/' + ${post.id}}">
-        <button type="submit">Delete Post</button>
-    </form>
-    <a style="display: inline;" th:href="@{'/update/' + ${post.id}}">
-        <button>Update Post</button>
-    </a>
-</div>
 </body>
-
 </html>
