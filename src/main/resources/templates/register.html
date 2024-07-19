@@ -8,18 +8,21 @@
 <body>
 <div class="signup-container">
     <h2>User Signup</h2>
-    <form method="get" th:action="@{/addUser}">
+    <form method="post" th:action="@{/addUser}">
         <label for="name">Name:</label>
-        <input id="name" name="name" required type="text"/>
+        <input id="name" name="name" required type="text" class="input-field"/>
 
         <label for="email">Email:</label>
-        <input id="email" name="email" required type="email"/>
+        <input id="email" name="email" required type="email" class="input-field"/>
 
         <label for="password">Password:</label>
-        <input id="password" name="password" required type="password"/>
+        <input id="password" name="password" required type="password" class="input-field"/>
 
-        <button type="submit">Signup</button>
+        <button type="submit" class="submit-btn">Signup</button>
     </form>
+    <div class="login-link">
+        <p>Already have an account? <a th:href="@{/login}">Login</a></p>
+    </div>
 </div>
 </body>
 </html>
