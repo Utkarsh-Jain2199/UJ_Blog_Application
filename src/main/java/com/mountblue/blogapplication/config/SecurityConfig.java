@@ -32,7 +32,7 @@ public class SecurityConfig {
                         configure
                                 //  .requestMatchers("/**").hasRole("author")
                                // .requestMatchers(HttpMethod.GET, "po")
-                                .requestMatchers("/","/api/**","/css/**", "/posts/{postId}").permitAll()
+                                .requestMatchers("/","/api/**","/css/**","/images/**","/posts/{postId}").permitAll()
                                 .requestMatchers("/access-denied", "/register").permitAll()
                                 .requestMatchers("/addUser", "/comment/{postId}").permitAll()
                                 .anyRequest().authenticated()
