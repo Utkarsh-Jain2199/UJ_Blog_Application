@@ -11,7 +11,10 @@
 <body>
 <div class="container">
     <div class="header">
-        <h1>My Blog Application</h1>
+        <div class="logo-title">
+            <img th:src="@{/images/logo.svg}" alt="Blog Logo" class="logo">
+            <h1>BlogVerse</h1>
+        </div>
         <div class="actions">
             <a th:href="@{/loginPage}" th:unless="${#authorization.expression('isAuthenticated()')}">
                 <button class="login-btn">Login</button>
@@ -91,9 +94,8 @@
                 <i class="fas fa-chevron-left"></i> <button class="nav-btn prev-btn"> Previous </button>
             </span>
         </button>
-
-
-            <a th:href="@{'/?pageNo=' + ${currentPage + 1}+'&sortField=' + ${sortField}+'&sortOrder=' + ${sortOrder} }"
+        
+          <a th:href="@{'/?pageNo=' + ${currentPage + 1}+'&sortField=' + ${sortField}+'&sortOrder=' + ${sortOrder} }"
                th:if="${currentPage < totalPages - 1}">
                 <button class="nav-btn next-btn" >Next</button><i class="fas fa-chevron-right"></i>
             </a>
