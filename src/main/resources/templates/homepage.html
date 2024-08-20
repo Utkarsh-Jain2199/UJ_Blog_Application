@@ -44,8 +44,8 @@
             <button>
                 <form method="get" th:action="@{/}">
                     <select name="sortOrder">
-                        <option value="asc">Old First</option>
                         <option value="desc">New First</option>
+                        <option value="asc">Old First</option>
                     </select>
                     <input name="sortField" type="hidden" value="createdAt">
                     <button type="submit"><span>Sort</span></button>
@@ -76,7 +76,7 @@
             </a>
             <h4 th:text="'Created By : '+${post.author}"></h4>
             <p th:text="${post.excerpt}"></p>
-            <p th:text="${post.createdAt}"></p>
+            <p th:text="${post.formattedCreatedAt}"></p>
             <span th:text="${#strings.abbreviate(post.content, 300)}"></span>
             <a th:href="@{/posts/{postId}(postId=${post.id})}" th:if="${#strings.length(post.content) > 300}">Read
                 More</a>
@@ -94,8 +94,9 @@
                 <i class="fas fa-chevron-left"></i> <button class="nav-btn prev-btn"> Previous </button>
             </span>
         </button>
-        
-          <a th:href="@{'/?pageNo=' + ${currentPage + 1}+'&sortField=' + ${sortField}+'&sortOrder=' + ${sortOrder} }"
+
+
+            <a th:href="@{'/?pageNo=' + ${currentPage + 1}+'&sortField=' + ${sortField}+'&sortOrder=' + ${sortOrder} }"
                th:if="${currentPage < totalPages - 1}">
                 <button class="nav-btn next-btn" >Next</button><i class="fas fa-chevron-right"></i>
             </a>
