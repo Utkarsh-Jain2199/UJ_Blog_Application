@@ -11,7 +11,10 @@
 <body>
 <div class="container">
     <div class="header">
-        <h1>My Blog Application</h1>
+        <div class="logo-title">
+            <img th:src="@{/images/logo.svg}" alt="Blog Logo" class="logo">
+            <h1>BlogVerse</h1>
+        </div>
         <div class="actions">
             <a th:href="@{/loginPage}" th:unless="${#authorization.expression('isAuthenticated()')}">
                 <button class="login-btn">Login</button>
@@ -41,8 +44,8 @@
             <button>
                 <form method="get" th:action="@{/}">
                     <select name="sortOrder">
-                        <option value="asc">Old First</option>
                         <option value="desc">New First</option>
+                        <option value="asc">Old First</option>
                     </select>
                     <input name="sortField" type="hidden" value="createdAt">
                     <button type="submit"><span>Sort</span></button>
@@ -73,7 +76,7 @@
             </a>
             <h4 th:text="'Created By : '+${post.author}"></h4>
             <p th:text="${post.excerpt}"></p>
-            <p th:text="${post.createdAt}"></p>
+            <p th:text="${post.formattedCreatedAt}"></p>
             <span th:text="${#strings.abbreviate(post.content, 300)}"></span>
             <a th:href="@{/posts/{postId}(postId=${post.id})}" th:if="${#strings.length(post.content) > 300}">Read
                 More</a>
@@ -82,23 +85,23 @@
     <br>
     <br>
     <div class="navigation">
-        <button class="nav-btn prev-btn">
+
             <a th:href="@{'/?pageNo=' + ${currentPage - 1}+'&sortField=' + ${sortField}+'&sortOrder=' + ${sortOrder} }"
                th:if="${currentPage > 0}">
-                <i class="fas fa-chevron-left"></i> Previous
+                <i class="fas fa-chevron-left"></i> <button class="nav-btn prev-btn">Previous</button>
             </a>
             <span th:unless="${currentPage > 0}">
-                <i class="fas fa-chevron-left"></i> Previous
+                <i class="fas fa-chevron-left"></i> <button class="nav-btn prev-btn"> Previous </button>
             </span>
         </button>
 
-        <button class="nav-btn next-btn">
+
             <a th:href="@{'/?pageNo=' + ${currentPage + 1}+'&sortField=' + ${sortField}+'&sortOrder=' + ${sortOrder} }"
                th:if="${currentPage < totalPages - 1}">
-                Next <i class="fas fa-chevron-right"></i>
+                <button class="nav-btn next-btn" >Next</button><i class="fas fa-chevron-right"></i>
             </a>
             <span th:unless="${currentPage < totalPages - 1}">
-                Next <i class="fas fa-chevron-right"></i>
+               <button class="nav-btn next-btn"> Next</button> <i class="fas fa-chevron-right"></i>
             </span>
         </button>
     </div>
