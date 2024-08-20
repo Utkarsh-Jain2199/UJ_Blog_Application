@@ -1,8 +1,8 @@
 package com.mountblue.blogapplication.entities;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -35,6 +35,12 @@ public class Post {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @Transient
+    private String formattedCreatedAt;
+
+    // Define the DateTimeFormatter
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd MMMM yyyy, hh:mm:ss a");
 
     public Long getId() {
         return this.id;
@@ -108,6 +114,10 @@ public class Post {
         this.updatedAt = updatedAt;
     }
 
+    public String getFormattedCreatedAt() {
+        return this.createdAt != null ? this.createdAt.format(FORMATTER) : "";
+    }
+
     @Override
     public String toString() {
         return "Post{" +
@@ -126,6 +136,7 @@ public class Post {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     List<Comment> comments;
+
     @ManyToMany
     Set<Tag> tags = new HashSet<>();
 
@@ -145,4 +156,3 @@ public class Post {
         this.tags = tags;
     }
 }
-
