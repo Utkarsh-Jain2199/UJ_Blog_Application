@@ -19,7 +19,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +56,7 @@ public class PostController {
         //post.setAuthor("Unknown");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userRepository.findByEmail(authentication.getName());
-         if (user.getRole().equals("author") || user.getRole().equals("admin")) {
+        if (user.getRole().equals("author") || user.getRole().equals("admin")) {
             post.setAuthor(user.getName());
         }
         user.getPosts().add(post);
@@ -98,7 +97,7 @@ public class PostController {
     @GetMapping("/")
     public String showFrontPage(@RequestParam(defaultValue = "0") Integer pageNo,
                                 @RequestParam(defaultValue = "createdAt") String sortField,
-                                @RequestParam(defaultValue = "asc") String sortOrder,
+                                @RequestParam(defaultValue = "desc") String sortOrder,
                                 @RequestParam(required = false) String searchTerm,
                                 Model model) {
         int actualPageNo = (pageNo != null) ? pageNo : 0;
@@ -180,7 +179,7 @@ public class PostController {
         updatedPost.setUpdatedAt(LocalDateTime.now());
         Post post = postService.getPostById(postId);
         updatedPost.setAuthor(post.getAuthor());
-        updatedPost.setCreatedAt(post.getCreatedAt());
+        updatedPost.setCreatedAt(LocalDateTime.now());
         updatedPost.setId(postId);
         postService.updatePost(updatedPost);
         tagService.addTagsToPost(postId, updatedTags);
