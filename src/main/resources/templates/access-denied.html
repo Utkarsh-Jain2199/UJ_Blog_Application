@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Error 404</title>
     <link rel="stylesheet" th:href="@{/css/access-denied.css}">
+    <link rel="stylesheet" th:href="@{/css/darkmode.css}">
 </head>
 <body>
 <div class="error-container">
@@ -13,7 +14,18 @@
         <button type="submit">Go to HomePage</button>
     </form>
 </div>
+
+<!-- JavaScript to Handle Dark Mode -->
+<script>
+    // Check stored preference on page load and apply dark mode if enabled
+    window.addEventListener('load', () => {
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            document.body.classList.add('dark-mode');
+        }
+    });
+</script>
 </body>
 </html>
+
 
 
