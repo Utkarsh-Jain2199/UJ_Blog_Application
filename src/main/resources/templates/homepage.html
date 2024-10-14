@@ -121,13 +121,11 @@
     window.addEventListener('load', () => {
         const darkModeToggle = document.getElementById('darkModeToggle');
 
-        // Apply dark mode if previously enabled
         if (localStorage.getItem('darkMode') === 'enabled') {
             enableDarkMode();
             darkModeToggle.checked = true;
         }
 
-        // Listen for toggle switch changes
         darkModeToggle.addEventListener('change', () => {
             if (darkModeToggle.checked) {
                 enableDarkMode();
