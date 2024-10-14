@@ -379,3 +379,7 @@ body.dark-mode .submit-btn {
 body.dark-mode .submit-btn:hover {
     background-color: #555;
 }
+
+body.dark-mode .logo-title .logo {
+    filter: invert(1) brightness(2); 
+}
