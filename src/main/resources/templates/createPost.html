@@ -1,4 +1,3 @@
-<!--
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
@@ -6,34 +5,7 @@
     <meta charset="UTF-8"/>
     <title>Create Post</title>
     <link rel="stylesheet" th:href="@{/css/createPost.css}">
-</head>
-
-<body>
-<h2>Create a New Post</h2>
-<form method="post" th:action="@{/create}" th:object="${post}">
-    <label for="title">Title:</label>
-    <input id="title" th:field="*{title}" type="text"/>
-    <label for="excerpt">Excerpt:</label>
-    <input id="excerpt" th:field="*{excerpt}" type="text"/>
-    <label for="tags">Tags (separated by commas):</label>
-    <input id="tags" name="tagsInput" type="text"/><br/>
-    <label for="content">Blog Post Content:</label>
-    <textarea id="content" th:field="*{content}"></textarea>
-    <button type="submit">Publish</button>
-</form>
-</body>
-
-</html>
-
--->
-
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-
-<head>
-    <meta charset="UTF-8"/>
-    <title>Create Post</title>
-    <link rel="stylesheet" th:href="@{/css/createPost.css}">
+    <link rel="stylesheet" th:href="@{/css/darkmode.css}">
 </head>
 
 <body>
@@ -51,5 +23,14 @@
         <button type="submit" class="submit-btn">Publish</button>
     </form>
 </div>
+
+<!-- JavaScript to Apply Dark Mode -->
+<script>
+    window.addEventListener('load', () => {
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            document.body.classList.add('dark-mode');
+        }
+    });
+</script>
 </body>
 </html>
