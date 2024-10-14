@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Register</title>
     <link rel="stylesheet" th:href="@{/css/register.css}">
+    <link rel="stylesheet" th:href="@{/css/darkmode.css}">
 </head>
 <body>
 <div class="signup-container">
@@ -24,5 +25,13 @@
         <p>Already have an account? <a th:href="@{/login}">Login</a></p>
     </div>
 </div>
+
+<script>
+    window.addEventListener('load', () => {
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            document.body.classList.add('dark-mode');
+        }
+    });
+</script>
 </body>
 </html>
