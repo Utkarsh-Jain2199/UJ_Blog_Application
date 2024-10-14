@@ -5,6 +5,7 @@
     <meta charset="UTF-8"/>
     <title>Single Post</title>
     <link rel="stylesheet" th:href="@{/css/post.css}">
+    <link rel="stylesheet" th:href="@{/css/darkmode.css}">
 </head>
 
 <body>
@@ -16,12 +17,14 @@
     <h4 th:text="'Created By : '+${post.author}"></h4>
     <h3 th:text="'Excerpt : '+${post.excerpt}"></h3>
     <p th:text="${post.content}"></p>
+
     <div class="tags-container">
         <h3>Tags:</h3>
         <div class="tags-section" th:each="tag : ${tags}">
             <span class="tag" th:text="${tag.name}"></span>
         </div>
     </div>
+
     <h2>Comments</h2>
     <div class="comments-section" th:each="comment : ${commentsList}">
         <p class="comment-author" th:text="${comment.name}"></p>
@@ -36,16 +39,18 @@
             </form>
         </div>
     </div>
+
     <h3>Add a new Comment</h3>
     <form method="post" th:action="@{/comment/{postId}(postId=${post.id})}" th:object="${newComment}">
         <label for="name">Your Name:</label>
         <input id="name" name="name" required type="text" class="input-field"/>
-        
+
         <label for="comment">Your Comment:</label>
         <textarea id="comment" name="comment" required class="textarea-field"></textarea><br/>
 
         <button type="submit" class="submit-btn">Add Comment</button>
     </form>
+
     <div class="post-actions">
         <form method="post" th:action="@{'/delete/' + ${post.id}}">
             <button type="submit" class="delete-post-button">Delete Post</button>
@@ -55,6 +60,14 @@
         </a>
     </div>
 </div>
+
+<script>
+    window.addEventListener('load', () => {
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            document.body.classList.add('dark-mode');
+        }
+    });
+</script>
 </body>
 
 </html>
