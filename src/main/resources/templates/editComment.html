@@ -5,6 +5,7 @@
     <meta charset="UTF-8"/>
     <title>Edit Comment</title>
     <link rel="stylesheet" th:href="@{/css/editComment.css}">
+    <link rel="stylesheet" th:href="@{/css/darkmode.css}">
 </head>
 
 <body>
@@ -16,5 +17,13 @@
         <button type="submit" class="submit-btn">Update Comment</button>
     </form>
 </div>
+
+<script>
+    window.addEventListener('load', () => {
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            document.body.classList.add('dark-mode');
+        }
+    });
+</script>
 </body>
 </html>
