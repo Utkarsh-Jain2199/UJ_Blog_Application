@@ -6,6 +6,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>My Blog Application</title>
     <link rel="stylesheet" th:href="@{/css/homepage.css}">
+    <link rel="stylesheet" th:href="@{/css/darkmode.css}" id="dark-mode-style">
 </head>
 
 <body>
@@ -15,6 +16,14 @@
             <img th:src="@{/images/logo.svg}" alt="Blog Logo" class="logo">
             <h1>BlogVerse</h1>
         </div>
+
+        <div class="dark-mode-toggle">
+            <label class="switch">
+                <input type="checkbox" id="darkModeToggle">
+                <span class="slider"></span>
+            </label>
+        </div>
+
         <div class="actions">
             <a th:href="@{/loginPage}" th:unless="${#authorization.expression('isAuthenticated()')}">
                 <button class="login-btn">Login</button>
@@ -26,21 +35,27 @@
                 <h2>Welcome, <span th:text="${user.name}"></span>!</h2>
             </span>
         </div>
+
         <th:block th:if="${#authorization.expression('isAuthenticated()')}">
             <form method="post" th:action="@{/logout}">
                 <input type="submit" value="Logout">
             </form>
         </th:block>
+
+        <!-- New Post Form -->
         <form method="get" th:action="@{/newPost}">
             <button type="submit">Create New Post</button>
         </form>
     </div>
+
     <div class="options">
         <div class="filter-section">
+            <!-- Search Form -->
             <form method="get" th:action="@{/}">
                 <input name="searchTerm" placeholder="Search..." type="text"/>
                 <button type="submit">Search</button>
             </form>
+
             <button>
                 <form method="get" th:action="@{/}">
                     <select name="sortOrder">
@@ -51,6 +66,7 @@
                     <button type="submit"><span>Sort</span></button>
                 </form>
             </button>
+
             <form method="get" th:action="@{/filter}">
                 <div class="select-section">
                     <h4>Select an author</h4>
@@ -64,13 +80,11 @@
                 </div>
                 <button class="filter-btn" type="submit">Filter</button>
             </form>
-
         </div>
     </div>
 
     <div class="posts">
         <div class="homePage" th:each="post : ${posts}">
-
             <a th:href="@{/posts/{postId}(postId=${post.id})}">
                 <h3 th:text="${post.title}"></h3>
             </a>
@@ -78,34 +92,60 @@
             <p th:text="${post.excerpt}"></p>
             <p th:text="${post.formattedCreatedAt}"></p>
             <span th:text="${#strings.abbreviate(post.content, 300)}"></span>
-            <a th:href="@{/posts/{postId}(postId=${post.id})}" th:if="${#strings.length(post.content) > 300}">Read
-                More</a>
+            <a th:href="@{/posts/{postId}(postId=${post.id})}" th:if="${#strings.length(post.content) > 300}">Read More</a>
         </div>
     </div>
-    <br>
-    <br>
+
+    <br><br>
+
     <div class="navigation">
+        <a th:href="@{'/?pageNo=' + ${currentPage - 1}+'&sortField=' + ${sortField}+'&sortOrder=' + ${sortOrder} }"
+           th:if="${currentPage > 0}">
+            <i class="fas fa-chevron-left"></i> <button class="nav-btn prev-btn">Previous</button>
+        </a>
+        <span th:unless="${currentPage > 0}">
+            <i class="fas fa-chevron-left"></i> <button class="nav-btn prev-btn">Previous</button>
+        </span>
 
-            <a th:href="@{'/?pageNo=' + ${currentPage - 1}+'&sortField=' + ${sortField}+'&sortOrder=' + ${sortOrder} }"
-               th:if="${currentPage > 0}">
-                <i class="fas fa-chevron-left"></i> <button class="nav-btn prev-btn">Previous</button>
-            </a>
-            <span th:unless="${currentPage > 0}">
-                <i class="fas fa-chevron-left"></i> <button class="nav-btn prev-btn"> Previous </button>
-            </span>
-        </button>
-
-
-            <a th:href="@{'/?pageNo=' + ${currentPage + 1}+'&sortField=' + ${sortField}+'&sortOrder=' + ${sortOrder} }"
-               th:if="${currentPage < totalPages - 1}">
-                <button class="nav-btn next-btn" >Next</button><i class="fas fa-chevron-right"></i>
-            </a>
-            <span th:unless="${currentPage < totalPages - 1}">
-               <button class="nav-btn next-btn"> Next</button> <i class="fas fa-chevron-right"></i>
-            </span>
-        </button>
+        <a th:href="@{'/?pageNo=' + ${currentPage + 1}+'&sortField=' + ${sortField}+'&sortOrder=' + ${sortOrder} }"
+           th:if="${currentPage < totalPages - 1}">
+            <button class="nav-btn next-btn">Next</button><i class="fas fa-chevron-right"></i>
+        </a>
+        <span th:unless="${currentPage < totalPages - 1}">
+           <button class="nav-btn next-btn">Next</button><i class="fas fa-chevron-right"></i>
+        </span>
     </div>
 </div>
-</body>
 
+<script>
+    window.addEventListener('load', () => {
+        const darkModeToggle = document.getElementById('darkModeToggle');
+
+        // Apply dark mode if previously enabled
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            enableDarkMode();
+            darkModeToggle.checked = true;
+        }
+
+        // Listen for toggle switch changes
+        darkModeToggle.addEventListener('change', () => {
+            if (darkModeToggle.checked) {
+                enableDarkMode();
+            } else {
+                disableDarkMode();
+            }
+        });
+
+        function enableDarkMode() {
+            document.body.classList.add('dark-mode');
+            localStorage.setItem('darkMode', 'enabled');
+        }
+
+        function disableDarkMode() {
+            document.body.classList.remove('dark-mode');
+            localStorage.setItem('darkMode', 'disabled');
+        }
+    });
+</script>
+</body>
 </html>
