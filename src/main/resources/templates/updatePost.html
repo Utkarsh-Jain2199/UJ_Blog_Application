@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8"/>
     <title>Update Post</title>
     <link rel="stylesheet" th:href="@{/css/updatePost.css}">
+    <link rel="stylesheet" th:href="@{/css/darkmode.css}">
 </head>
-
 <body>
 <div class="container">
     <h2>Update Post</h2>
@@ -14,14 +13,26 @@
         <input th:field="${post.id}" type="hidden"/>
         <label for="title">Title:</label>
         <input id="title" th:field="${post.title}" type="text" class="input-field"/><br/>
+
         <label for="excerpt">Excerpt:</label>
         <input id="excerpt" th:field="${post.excerpt}" type="text" class="input-field"/><br/>
+
         <label for="tags">Tags:</label>
         <input id="tags" name="tag" th:value="${tags}" type="text" class="input-field"/><br/>
+
         <label for="content">Blog Post Content:</label>
         <textarea id="content" th:field="${post.content}" class="textarea-field"></textarea><br/>
+
         <button type="submit" class="submit-btn">Update Post</button>
     </form>
 </div>
+
+<script>
+    window.addEventListener('load', () => {
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            document.body.classList.add('dark-mode');
+        }
+    });
+</script>
 </body>
 </html>
