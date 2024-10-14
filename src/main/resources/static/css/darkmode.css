@@ -145,7 +145,6 @@ body.dark-mode label {
     color: #ffffff; /* White color */
 }
 
-/* Dark mode styles for the login container */
 body.dark-mode .login-container {
     background-color: #2c2c2c;
     color: #e0e0e0;
@@ -184,7 +183,6 @@ body.dark-mode .login-container .submit-btn:hover {
     background-color: #555;
 }
 
-/* Adjust link color for better visibility in dark mode */
 body.dark-mode .register-link a {
     color: #bb86fc;
 }
@@ -193,7 +191,6 @@ body.dark-mode .register-link a:hover {
     color: #d18aff;
 }
 
-/* Dark mode styles for the Single Post container */
 body.dark-mode .container {
     background-color: #2c2c2c;
     color: #e0e0e0;
@@ -201,7 +198,6 @@ body.dark-mode .container {
     border-radius: 8px;
 }
 
-/* Headings and Paragraphs */
 body.dark-mode h2,
 body.dark-mode h3,
 body.dark-mode h4,
@@ -209,7 +205,6 @@ body.dark-mode p {
     color: #ffffff;
 }
 
-/* Tag section styles */
 body.dark-mode .tags-container h3 {
     color: #ffffff;
 }
@@ -222,7 +217,6 @@ body.dark-mode .tags-section .tag {
     margin-right: 5px;
 }
 
-/* Comments section styles */
 body.dark-mode .comments-section {
     background-color: #333;
     padding: 10px;
@@ -234,7 +228,6 @@ body.dark-mode .comment-text {
     color: #ffffff;
 }
 
-/* Input fields and buttons */
 body.dark-mode .input-field,
 body.dark-mode .textarea-field {
     background-color: #333;
@@ -260,7 +253,6 @@ body.dark-mode .update-post-button:hover {
     background-color: #555;
 }
 
-/* Dark mode styles for the signup container */
 body.dark-mode .signup-container {
     background-color: #2c2c2c;
     color: #e0e0e0;
@@ -298,7 +290,6 @@ body.dark-mode .submit-btn:hover {
     background-color: #555;
 }
 
-/* Adjust link color for better visibility in dark mode */
 body.dark-mode .login-link a {
     color: #bb86fc;
 }
@@ -307,7 +298,6 @@ body.dark-mode .login-link a:hover {
     color: #d18aff;
 }
 
-/* Dark mode styles for the Update Post container */
 body.dark-mode .container {
     background-color: #2c2c2c;
     color: #e0e0e0;
@@ -315,13 +305,11 @@ body.dark-mode .container {
     border-radius: 8px;
 }
 
-/* Headings and Labels */
 body.dark-mode h2,
 body.dark-mode label {
     color: #ffffff;
 }
 
-/* Input fields and Textareas */
 body.dark-mode .input-field,
 body.dark-mode .textarea-field {
     background-color: #333;
@@ -332,7 +320,6 @@ body.dark-mode .textarea-field {
     margin-bottom: 15px;
 }
 
-/* Submit button styling */
 body.dark-mode .submit-btn {
     background-color: #444;
     color: #e0e0e0;
@@ -345,7 +332,6 @@ body.dark-mode .submit-btn:hover {
     background-color: #555;
 }
 
-/* Dark mode styles for the Create Post form */
 body.dark-mode .form-container {
     background-color: #2c2c2c;
     color: #e0e0e0;
