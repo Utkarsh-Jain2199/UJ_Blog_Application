@@ -101,7 +101,7 @@ public class PostController {
                                 @RequestParam(required = false) String searchTerm,
                                 Model model) {
         int actualPageNo = (pageNo != null) ? pageNo : 0;
-        int pageSize = 4;
+        int pageSize = 6;
         Sort sort = Sort.by(Sort.Direction.fromString(sortOrder), sortField);
         Page<Post> postPage;
         PageRequest pageRequest = PageRequest.of(actualPageNo, pageSize, sort);
