@@ -125,11 +125,6 @@ body.dark-mode .filter-btn:hover {
 body.dark-mode input[type="text"],
 body.dark-mode select,
 body.dark-mode .input-field,
-body.dark-mode .textarea-field {
-    background: var(--dark-background-white);
-    color: var(--dark-text-primary);
-    border: 2px solid var(--dark-border-color);
-}
 
 body.dark-mode input[type="text"]:focus,
 body.dark-mode select:focus,
@@ -252,11 +247,6 @@ body.dark-mode .navigation a .nav-btn:hover {
 body.dark-mode .navigation span .nav-btn {
     opacity: 0.5;
     cursor: not-allowed;
-}
-
-/* Labels and headings */
-body.dark-mode label {
-    color: var(--dark-text-primary);
 }
 
 body.dark-mode h2,
