@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>My Blog Application</title>
+    <title>BlogVerse</title>
+    <link rel="icon" type="image/svg+xml" th:href="@{/images/logo.svg}">
     <link rel="stylesheet" th:href="@{/css/homepage.css}">
     <link rel="stylesheet" th:href="@{/css/darkmode.css}" id="dark-mode-style">
 </head>
@@ -36,47 +37,78 @@
             </span>
         </div>
 
+         <!-- New Post Form -->
+        <form method="get" th:action="@{/newPost}">
+            <button type="submit">Create New Post</button>
+        </form>
+
         <th:block th:if="${#authorization.expression('isAuthenticated()')}">
             <form method="post" th:action="@{/logout}">
                 <input type="submit" value="Logout">
             </form>
-        </th:block>
-
-        <!-- New Post Form -->
-        <form method="get" th:action="@{/newPost}">
-            <button type="submit">Create New Post</button>
-        </form>
+        </th:block> 
     </div>
 
     <div class="options">
         <div class="filter-section">
             <!-- Search Form -->
-            <form method="get" th:action="@{/}">
-                <input name="searchTerm" placeholder="Search..." type="text"/>
+            <form class="search-form" method="get" th:action="@{/}">
+                <input name="searchTerm" placeholder="Search posts..." type="text"/>
                 <button type="submit">Search</button>
             </form>
 
-            <button>
-                <form method="get" th:action="@{/}">
-                    <select name="sortOrder">
-                        <option value="desc">New First</option>
-                        <option value="asc">Old First</option>
-                    </select>
-                    <input name="sortField" type="hidden" value="createdAt">
-                    <button type="submit"><span>Sort</span></button>
-                </form>
-            </button>
+            <!-- Sort Form -->
+            <form class="sort-form" method="get" th:action="@{/}">
+                <select name="sortOrder">
+                    <option value="desc" th:selected="${sortOrder == 'desc'}">New First</option>
+                    <option value="asc" th:selected="${sortOrder == 'asc'}">Old First</option>
+                </select>
+                <input name="sortField" type="hidden" value="createdAt">
+                <button type="submit">Sort</button>
+            </form>
 
-            <form method="get" th:action="@{/filter}">
+            <!-- Filter Form -->
+            <form class="filter-form" method="get" th:action="@{/filter}">
                 <div class="select-section">
-                    <h4>Select an author</h4>
-                    <select multiple name="authors">
-                        <option th:each="author : ${authors}" th:text="${author}" th:value="${author}"></option>
-                    </select>
-                    <h4>Select a tag</h4>
-                    <select multiple name="tags">
-                        <option th:each="tag : ${tags}" th:text="${tag.name}" th:value="${tag.id}"></option>
-                    </select>
+                    <div class="filter-group author-filter">
+                        <h4>Select an author</h4>
+                        <div class="custom-dropdown single-select" data-name="authors" th:attr="data-selected=${selectedAuthor}">
+                            <div class="dropdown-trigger">
+                                <span class="dropdown-text">All Authors</span>
+                                <svg class="dropdown-arrow" width="12" height="8" viewBox="0 0 12 8" fill="none">
+                                    <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-menu">
+                                <div class="dropdown-option" data-value="">
+                                    <label>All Authors</label>
+                                </div>
+                                <div class="dropdown-option" th:each="author : ${authors}" th:data-value="${author}" th:classappend="${selectedAuthor == author} ? 'selected'">
+                                    <label th:text="${author}"></label>
+                                </div>
+                            </div>
+                            <!-- Hidden inputs will be added by JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group tag-filter">
+                        <h4>Select tags</h4>
+                        <div class="custom-dropdown" data-name="tags" th:attr="data-selected=${selectedTags}">
+                            <div class="dropdown-trigger">
+                                <span class="dropdown-text">Choose tags...</span>
+                                <svg class="dropdown-arrow" width="12" height="8" viewBox="0 0 12 8" fill="none">
+                                    <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-menu">
+                                <div class="dropdown-option" th:each="tag : ${tags}" th:data-value="${tag.id}">
+                                    <input type="checkbox" th:id="'tag-' + ${tag.id}" class="dropdown-checkbox" th:checked="${selectedTags != null and selectedTags.contains(tag.id)}">
+                                    <label th:for="'tag-' + ${tag.id}" th:text="${tag.name}"></label>
+                                </div>
+                            </div>
+                            <!-- Hidden inputs will be added by JavaScript -->
+                        </div>
+                    </div>
                 </div>
                 <button class="filter-btn" type="submit">Filter</button>
             </form>
@@ -93,6 +125,20 @@
             <p th:text="${post.formattedCreatedAt}"></p>
             <span th:text="${#strings.abbreviate(post.content, 300)}"></span>
             <a th:href="@{/posts/{postId}(postId=${post.id})}" th:if="${#strings.length(post.content) > 300}">Read More</a>
+        </div>
+        
+        <!-- No posts message -->
+        <div class="no-posts-message" th:if="${#lists.isEmpty(posts)}">
+            <div class="no-posts-content">
+                <svg class="no-posts-icon" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                <h3>No posts found</h3>
+                <p>We couldn't find any posts matching your filters. Try adjusting your search criteria or browse all posts.</p>
+                <a href="/" class="reset-filters-btn">
+                    <button>View All Posts</button>
+                </a>
+            </div>
         </div>
     </div>
 
@@ -121,11 +167,13 @@
     window.addEventListener('load', () => {
         const darkModeToggle = document.getElementById('darkModeToggle');
 
+        // Apply dark mode if previously enabled
         if (localStorage.getItem('darkMode') === 'enabled') {
             enableDarkMode();
             darkModeToggle.checked = true;
         }
 
+        // Listen for toggle switch changes
         darkModeToggle.addEventListener('change', () => {
             if (darkModeToggle.checked) {
                 enableDarkMode();
@@ -143,6 +191,232 @@
             document.body.classList.remove('dark-mode');
             localStorage.setItem('darkMode', 'disabled');
         }
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+        // Set initial selected value for author dropdown
+        document.querySelectorAll('.custom-dropdown.single-select').forEach(dropdown => {
+            const selected = dropdown.getAttribute('data-selected');
+            if (selected) {
+                dropdown.querySelectorAll('.dropdown-option').forEach(option => {
+                    if (option.getAttribute('data-value') === selected) {
+                        option.classList.add('selected');
+                        dropdown.querySelector('.dropdown-text').textContent = option.textContent.trim();
+                    }
+                });
+            }
+        });
+        // Set initial selected values for tags dropdown
+        document.querySelectorAll('.custom-dropdown:not(.single-select)').forEach(dropdown => {
+            const selected = dropdown.getAttribute('data-selected');
+            if (selected) {
+                const selectedArr = selected.replace('[','').replace(']','').split(',').map(s => s.trim()).filter(Boolean);
+                dropdown.querySelectorAll('.dropdown-option').forEach(option => {
+                    const val = option.getAttribute('data-value');
+                    if (selectedArr.includes(val)) {
+                        const checkbox = option.querySelector('.dropdown-checkbox');
+                        if (checkbox) {
+                            checkbox.checked = true;
+                        }
+                    }
+                });
+            }
+        });
+    });
+
+    // Custom Dropdown Functionality
+    class CustomDropdown {
+        constructor(element) {
+            this.dropdown = element;
+            this.trigger = element.querySelector('.dropdown-trigger');
+            this.menu = element.querySelector('.dropdown-menu');
+            this.text = element.querySelector('.dropdown-text');
+            this.arrow = element.querySelector('.dropdown-arrow');
+            this.options = element.querySelectorAll('.dropdown-option');
+            this.checkboxes = element.querySelectorAll('.dropdown-checkbox');
+            this.name = element.dataset.name;
+            this.isSingleSelect = element.classList.contains('single-select');
+            this.selectedValues = new Set();
+            this.selectedTexts = new Set();
+            this.selectedValue = '';
+            this.selectedText = '';
+
+            this.init();
+            
+            // Initialize display for single-select (authors)
+            if (this.isSingleSelect) {
+                this.updateDisplay();
+            }
+        }
+
+        init() {
+            // Toggle dropdown on trigger click
+            this.trigger.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.toggle();
+            });
+
+            // Handle option selection
+            this.options.forEach(option => {
+                const checkbox = option.querySelector('.dropdown-checkbox');
+                const label = option.querySelector('label');
+                
+                option.addEventListener('click', (e) => {
+                    if (this.isSingleSelect) {
+                        e.preventDefault();
+                        this.selectSingleOption(option, label);
+                    } else {
+                        // For multi-select, only prevent default if we didn't click on the checkbox directly
+                        if (e.target !== checkbox) {
+                            e.preventDefault();
+                            checkbox.checked = !checkbox.checked;
+                            this.toggleMultiOption(option, checkbox, label);
+                        }
+                        // If we clicked on the checkbox directly, let it handle naturally and change event will fire
+                    }
+                });
+
+                if (checkbox) {
+                    checkbox.addEventListener('change', (e) => {
+                        e.stopPropagation();
+                        this.toggleMultiOption(option, checkbox, label);
+                    });
+                }
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!this.dropdown.contains(e.target)) {
+                    this.close();
+                }
+            });
+
+            // Prevent form submission when dropdown is open
+            this.dropdown.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    this.close();
+                }
+            });
+        }
+
+        toggle() {
+            if (this.menu.classList.contains('active')) {
+                this.close();
+            } else {
+                this.open();
+            }
+        }
+
+        open() {
+            // Close other dropdowns
+            document.querySelectorAll('.dropdown-menu.active').forEach(menu => {
+                menu.classList.remove('active');
+            });
+            document.querySelectorAll('.dropdown-trigger.active').forEach(trigger => {
+                trigger.classList.remove('active');
+            });
+
+            this.menu.classList.add('active');
+            this.trigger.classList.add('active');
+        }
+
+        close() {
+            this.menu.classList.remove('active');
+            this.trigger.classList.remove('active');
+        }
+
+        selectSingleOption(option, label) {
+            const value = option.dataset.value;
+            const text = label.textContent;
+
+            // Remove previous selection
+            this.options.forEach(opt => opt.classList.remove('selected'));
+            
+            // Add selection to current option
+            option.classList.add('selected');
+            
+            this.selectedValue = value;
+            this.selectedText = text;
+            
+            this.updateDisplay();
+            this.updateHiddenInputs();
+            
+            // Close dropdown after selection for single-select
+            this.close();
+        }
+
+        toggleMultiOption(option, checkbox, label) {
+            const value = option.dataset.value;
+            const text = label.textContent;
+
+            if (checkbox.checked) {
+                this.selectedValues.add(value);
+                this.selectedTexts.add(text);
+            } else {
+                this.selectedValues.delete(value);
+                this.selectedTexts.delete(text);
+            }
+
+            this.updateDisplay();
+            this.updateHiddenInputs();
+        }
+
+        updateDisplay() {
+            if (this.isSingleSelect) {
+                if (!this.selectedValue || this.selectedValue === '') {
+                    this.text.textContent = 'All Authors';
+                    this.text.classList.add('has-selections');
+                } else {
+                    this.text.textContent = this.selectedText;
+                    this.text.classList.add('has-selections');
+                }
+            } else {
+                if (this.selectedTexts.size === 0) {
+                    this.text.textContent = 'Choose tags...';
+                    this.text.classList.remove('has-selections');
+                } else {
+                    const selectedArray = Array.from(this.selectedTexts);
+                    if (selectedArray.length === 1) {
+                        this.text.textContent = selectedArray[0];
+                    } else {
+                        this.text.textContent = `${selectedArray.length} selected`;
+                    }
+                    this.text.classList.add('has-selections');
+                }
+            }
+        }
+
+        updateHiddenInputs() {
+            // Remove existing hidden inputs
+            this.dropdown.querySelectorAll('input[type="hidden"]').forEach(input => {
+                input.remove();
+            });
+
+            if (this.isSingleSelect) {
+                // Add single hidden input for selected value (only if not empty)
+                if (this.selectedValue && this.selectedValue !== '') {
+                    const hiddenInput = document.createElement('input');
+                    hiddenInput.type = 'hidden';
+                    hiddenInput.name = this.name;
+                    hiddenInput.value = this.selectedValue;
+                    this.dropdown.appendChild(hiddenInput);
+                }
+            } else {
+                // Add multiple hidden inputs for selected values
+                this.selectedValues.forEach(value => {
+                    const hiddenInput = document.createElement('input');
+                    hiddenInput.type = 'hidden';
+                    hiddenInput.name = this.name;
+                    hiddenInput.value = value;
+                    this.dropdown.appendChild(hiddenInput);
+                });
+            }
+        }
+    }
+
+    // Initialize all dropdowns
+    document.querySelectorAll('.custom-dropdown').forEach(dropdown => {
+        new CustomDropdown(dropdown);
     });
 </script>
 </body>

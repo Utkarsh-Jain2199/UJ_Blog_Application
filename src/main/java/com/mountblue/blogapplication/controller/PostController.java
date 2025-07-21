@@ -77,8 +77,6 @@ public class PostController {
         int actualPageNo = (pageNo != null) ? pageNo : 0;
         int pageSize = 4;
 
-        PageRequest pageRequest = PageRequest.of(actualPageNo, pageSize);
-        Page<Post> postPage = postService.getAllPosts(pageRequest);
         List<Post> filteredPosts = postService.filterPosts(authors, tags);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userRepository.findByEmail(authentication.getName());
@@ -86,11 +84,13 @@ public class PostController {
         model.addAttribute("posts", filteredPosts);
         model.addAttribute("authors", postService.getAllAuthors());
         model.addAttribute("tags", tagRepository.findAll());
-        model.addAttribute("posts", postPage.getContent());
         model.addAttribute("currentPage", actualPageNo);
-        model.addAttribute("totalPages", postPage.getTotalPages());
+        model.addAttribute("totalPages", 1);
         model.addAttribute("sortField", "createdAt");
         model.addAttribute("sortOrder", "asc");
+        // Persist selected author and tags for dropdowns
+        model.addAttribute("selectedAuthor", (authors != null && !authors.isEmpty()) ? authors.iterator().next() : "");
+        model.addAttribute("selectedTags", tags);
         return "homepage";
     }
 
